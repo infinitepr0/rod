@@ -87,17 +87,13 @@ func Example_disable_headless_to_debug() {
 
 	defer browser.MustClose()
 
-	page := browser.MustPage("https://www.wikipedia.org/")
+	page := browser.MustPage("https://github.com/")
 
-	page.MustElement("#searchLanguage").MustSelect("中文")
-	page.MustElement("#searchInput").MustInput("热干面")
-	page.Keyboard.MustPress(input.Enter)
+	page.MustElement("input").MustInput("git").MustPress(input.Enter)
 
-	fmt.Println(page.MustElement("#firstHeading").MustText())
+	text := page.MustElement(".codesearch-results p").MustText()
 
-	// Response gets the binary of the image as a []byte.
-	img := page.MustElement(`[alt="Hot Dry Noodles.jpg"]`).MustResource()
-	fmt.Println(len(img)) // print the size of the image
+	fmt.Println(text)
 
 	utils.Pause() // pause goroutine
 }
@@ -490,7 +486,7 @@ func Example_hijack_requests() {
 
 	go router.Run()
 
-	browser.MustPage("https://www.wikipedia.org/").MustWait(`document.title === 'hi'`)
+	browser.MustPage("https://github.com/").MustWait(`document.title === 'hi'`)
 
 	fmt.Println("done")
 
